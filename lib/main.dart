@@ -1,7 +1,7 @@
 import 'package:attendance_system/model/attendance_model.dart';
 import 'package:attendance_system/providers/attendance_provder.dart';
 import 'package:attendance_system/providers/user_document_provider.dart';
-import 'package:attendance_system/screens/all_user_screen.dart';
+import 'package:attendance_system/screens/user/all_user_screen.dart';
 import 'package:attendance_system/screens/basicPage.dart';
 import 'package:attendance_system/services/http_services/attendance_service/attendance_service.dart';
 import 'package:flutter/material.dart';
