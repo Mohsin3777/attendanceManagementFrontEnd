@@ -13,12 +13,12 @@ class AttendanceService {
     try {
       http.Response response = await get(
           'api/attendance/GetSingleDayAttendance/650573d8c0bf568f68b83e27');
-      print(response.body);
+      // print(response.body);
       switch (response.statusCode) {
         case 200:
           var data = await jsonDecode(response.body);
 
-          print(data);
+          // print(data);
           AttendanceModel attendanceModel = AttendanceModel.fromJson(data);
           // storeUserTokenInSharedPref(data['accessToken']);
           // UserModel? rNetUser = await getUserData();

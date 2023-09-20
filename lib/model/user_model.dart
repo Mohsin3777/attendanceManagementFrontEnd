@@ -5,6 +5,7 @@ class UserModel {
   String? name;
   String? rollNumber;
   int? iV;
+  bool? registered;
 
   UserModel(
       {this.email,
@@ -12,6 +13,7 @@ class UserModel {
       this.sId,
       this.name,
       this.rollNumber,
+      this.registered,
       this.iV});
 
   UserModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class UserModel {
     sId = json['_id'];
     name = json['name'];
     rollNumber = json['rollNumber'];
+    registered = json['registered'];
     iV = json['__v'];
   }
 
@@ -30,6 +33,7 @@ class UserModel {
     data['_id'] = this.sId;
     data['name'] = this.name;
     data['rollNumber'] = this.rollNumber;
+    data['registered'] = this.registered;
     data['__v'] = this.iV;
     return data;
   }
