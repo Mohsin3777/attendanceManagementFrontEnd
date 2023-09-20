@@ -6,8 +6,8 @@ class AppConstants {
 
   static String mapKey = 'AIzaSyBXDrw0XmVRV8-IrpbovlI5vzNOQS5rpTI';
 
-  static const baseUrl = 'http://192.168.100.7:8000/'; //matz 2g ip
+  // static const baseUrl = 'http://192.168.100.7:8000/'; //matz 2g ip
   // static const baseUrl = 'http://192.168.100.7:8000/'; //matz 5g  ip
 
-  //  static const baseUrl = 'http://192.168.18.67:8000/';//hme  ip
+static const baseUrl = 'http://192.168.18.67:8000/';//hme  ip
 }
