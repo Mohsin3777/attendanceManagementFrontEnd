@@ -41,7 +41,7 @@ class _BasicPageScreenState extends State<BasicPageScreen> {
                     children: [
                       Text(
                         'Today Attendance ' +
-                            value.attendanceModel!.data!.date.toString(),
+                            value.attendanceModel!.data!.date!,
                         style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,

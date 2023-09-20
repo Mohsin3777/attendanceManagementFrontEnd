@@ -59,8 +59,36 @@ class UserDocumentProvider extends ChangeNotifier {
       {required BuildContext context,
       required String userId,
       required bool registerStatus}) async {
+        print(userId);
     UserServiceClass userServiceClass = UserServiceClass();
     await userServiceClass.registerUser(
         context: context, userId: userId, registerStatus: registerStatus);
   }
+
+
+//remove register status to false
+   removeRegister(
+      {required BuildContext context,
+      required String userId,
+      }) {
+    isLoading = true;
+    _removeRegister(
+        context: context, userId: userId,);
+
+    isLoading = false;
+
+    notifyListeners();
+  }
+
+  _removeRegister(
+      {required BuildContext context,
+      required String userId,
+    }) async {
+        print(userId);
+    UserServiceClass userServiceClass = UserServiceClass();
+    await userServiceClass.removeRegister(
+        context: context, userId: userId, );
+  }
+
+
 }

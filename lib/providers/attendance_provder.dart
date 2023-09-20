@@ -5,7 +5,7 @@ import '../services/http_services/attendance_service/attendance_service.dart';
 
 class AttendanceProvider extends ChangeNotifier {
   List<AttendanceModel>? attendanceOfAllDays = [];
-  AttendanceModel? attendanceModel = AttendanceModel();
+  AttendanceModel? attendanceModel = AttendanceModel(data: null);
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;

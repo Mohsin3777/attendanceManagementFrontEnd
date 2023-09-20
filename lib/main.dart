@@ -1,12 +1,16 @@
 import 'package:attendance_system/model/attendance_model.dart';
 import 'package:attendance_system/providers/attendance_provder.dart';
 import 'package:attendance_system/providers/user_document_provider.dart';
+import 'package:attendance_system/screens/auth/create_user.dart';
+import 'package:attendance_system/screens/auth/signup.dart';
 import 'package:attendance_system/screens/user/all_user_screen.dart';
 import 'package:attendance_system/screens/basicPage.dart';
 import 'package:attendance_system/services/http_services/attendance_service/attendance_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
+import 'screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,7 +37,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              home: AllUsersScreen(),
+              home: HomeScreen(),
             );
           }),
     );

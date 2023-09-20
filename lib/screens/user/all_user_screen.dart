@@ -120,8 +120,18 @@ class RegisteredUsers extends StatelessWidget {
                 // itemCount: value.usersList!.length,
                 itemCount: value.registeredList!.length,
                 itemBuilder: (BuildContext ctx, index) {
-                  return UserCard(
-                    userModel: value.registeredList![index],
+                  return InkWell(
+                    onLongPress: ()async{
+                              await value.removeRegister(
+                        
+                            context: context,
+                            userId: value.registeredList![index].sId.toString());
+
+                        value.registeredList!.removeAt( index);
+                    },
+                    child: UserCard(
+                      userModel: value.registeredList![index],
+                    ),
                   );
                 });
       },
