@@ -5,6 +5,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'attendance_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -49,7 +51,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   )
                 ],
-              )
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CustomHomeIconButtonWithText(
+                    icon: Icons.all_inbox,
+                    text: 'Today Attendance',
+                    onpress: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AttendanceScreen()));
+                    },
+                  ),
+                  CustomHomeIconButtonWithText(
+                    icon: Icons.car_crash_outlined,
+                    text: 'Taday Attendance aa',
+                    onpress: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const CreateUserScreen()));
+                    },
+                  )
+                ],
+              ),
             ],
           ),
         ),
