@@ -9,20 +9,12 @@ import 'package:http/http.dart' as http;
 
 import '../api_response_helperclass.dart';
 
-class AuthServices{
-
-
-
-
+class AuthServices {
   Future registerUser(
-      {required BuildContext context,
-       UserModel? userModel}) async {
+      {required BuildContext context, UserModel? userModel}) async {
     try {
-
-      http.Response response = await post(
-          "addStudent/",
-json.encode(userModel!)
-     );
+      http.Response response =
+          await post("addStudent/", json.encode(userModel!));
       print(response.body);
       switch (response.statusCode) {
         case 200:
@@ -30,8 +22,7 @@ json.encode(userModel!)
           return response.body;
         default:
           // ignore: use_build_context_synchronously
-          CustomSnackBar.buildErrorSnackbar(
-              context, response.reasonPhrase.toString());
+          CustomSnackBar.buildErrorSnackbar(context, response.body.toString());
 
           throw Exception(response.reasonPhrase);
       }

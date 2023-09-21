@@ -31,17 +31,19 @@ class UserDetailsScreen extends StatelessWidget {
                     onPressed: () async {
                       print(userModel!.sId.toString());
                       if (userModel!.registered == true) {
-                        await val.registerUser(
-                            registerStatus: false,
-                            context: context,
-                            userId: userModel!.sId.toString());
+                        // await val.registerUser(
+                        //     registerStatus: false,
+                        //     context: context,
+                        //     userId: userModel!.sId.toString());
 
-                        val.registeredList!.add(userModel!);
+                        // val.registeredList!.add(userModel!);
                       } else {
                         await val.registerUser(
                             registerStatus: true,
                             context: context,
                             userId: userModel!.sId.toString());
+
+                        userModel!.registered = true;
 
                         val.registeredList!.add(userModel!);
                       }
