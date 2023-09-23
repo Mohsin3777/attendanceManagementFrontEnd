@@ -80,7 +80,7 @@ class AttendanceProvider extends ChangeNotifier {
           context: context,
           attendanceId: attendanceId!,
           studentRollNumber: studentRollNumber!,
-          attendanceStatus: status!);
+          attendanceStatus: status);
       isLoading = false;
       notifyListeners();
     }
@@ -97,5 +97,27 @@ class AttendanceProvider extends ChangeNotifier {
         attendanceId: attendanceId!,
         studentRollNumber: studentRollNumber!,
         attendanceStatus: attendanceStatus!);
+  }
+
+//get all attendance
+  //create attendnace
+  Future getAllDayAttendance(BuildContext context) async {
+    isLoading = true;
+
+    await _getAllDayAttendance(context);
+    isLoading = false;
+    notifyListeners();
+  }
+
+  _getAllDayAttendance(BuildContext context) async {
+    List<AttendanceModel>? atten = [];
+
+    attendanceOfAllDays = await attendanceService.getAllDaysAttendance();
+
+    // attendanceOfAllDays = atten;
+
+    print(attendanceOfAllDays![0].data!.toString() +
+        'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+    notifyListeners();
   }
 }

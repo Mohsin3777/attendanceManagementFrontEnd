@@ -121,4 +121,33 @@ class AttendanceService {
       throw UnknownException(e.toString());
     }
   }
+
+  //get all days Attendance
+  Future<List<AttendanceModel>?> getAllDaysAttendance() async {
+    try {
+      http.Response response = await get('api/attendance/getallDaysAttendance');
+
+      switch (response.statusCode) {
+        case 200:
+          var data = await jsonDecode(response.body);
+          AttendanceModel attendanceModel = AttendanceModel();
+          List<AttendanceModel>? attendanceModelList = [];
+          for (var i = 0; i < data['data']!.length; i++) {
+            attendanceModelList.add(AttendanceModel.fromJson(data['data'][i]));
+          }
+          print(attendanceModelList[0].data!.attendance);
+          return attendanceModelList;
+        default:
+          throw Exception(response.reasonPhrase);
+      }
+    } on SocketException {
+      throw NoInternetException('No Internet');
+    } on HttpException {
+      throw NoServiceFoundException('No Service Found');
+    } on FormatException {
+      throw InvalidFormatException('Invalid Data Format');
+    } catch (e) {
+      throw UnknownException(e.toString());
+    }
+  }
 }

@@ -14,7 +14,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  bool checkcreateAtten = false;
+  
   void initState() {
     super.initState();
     final provider = Provider.of<AttendanceProvider>(context, listen: false);

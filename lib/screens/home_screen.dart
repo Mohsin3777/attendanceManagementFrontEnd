@@ -1,3 +1,4 @@
+import 'package:attendance_system/screens/attendance/all_attendance_screen.dart';
 import 'package:attendance_system/screens/auth/create_user.dart';
 import 'package:attendance_system/screens/user/all_user_screen.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 10.h,
               ),
+
+              //second Row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -69,13 +72,43 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                   CustomHomeIconButtonWithText(
-                    icon: Icons.car_crash_outlined,
-                    text: 'Taday Attendance aa',
+                    icon: Icons.person,
+                    text: 'Add User',
                     onpress: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => const CreateUserScreen()));
+                    },
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              //third row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  CustomHomeIconButtonWithText(
+                    icon: Icons.all_inbox,
+                    text: 'All Attendance',
+                    onpress: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const AllAttendanceScreen()));
+                    },
+                  ),
+                  CustomHomeIconButtonWithText(
+                    icon: Icons.person,
+                    text: '',
+                    onpress: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => const CreateUserScreen()));
                     },
                   )
                 ],
@@ -103,18 +136,22 @@ class CustomHomeIconButtonWithText extends StatelessWidget {
     return InkWell(
       onTap: onpress,
       child: Container(
+          width: 100.w,
+          height: 100.h,
           decoration: BoxDecoration(
               color: Color(0xff575757),
               borderRadius: BorderRadius.circular(20.r)),
-          padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 30.h),
-          child: Column(
-            children: [
-              Icon(icon, size: 60.sp, color: Color(0xffdadada)),
-              Text(
-                text,
-                style: TextStyle(fontSize: 20.sp, color: Color(0xffdadada)),
-              )
-            ],
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          child: FittedBox(
+            child: Column(
+              children: [
+                Icon(icon, size: 60.sp, color: Color(0xffdadada)),
+                Text(
+                  text,
+                  style: TextStyle(fontSize: 20.sp, color: Color(0xffdadada)),
+                )
+              ],
+            ),
           )),
     );
   }
