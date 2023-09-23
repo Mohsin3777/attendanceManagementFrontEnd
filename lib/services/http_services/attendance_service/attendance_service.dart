@@ -75,22 +75,30 @@ class AttendanceService {
   }
 
   //update status
-  Future<AttendanceModel> makeSinglePresent(
-      {required BuildContext context,
-      required String attendanceId,
-      required String StudentAttendanceId}) async {
+  Future<AttendanceModel> makeSinglePresent({
+    required BuildContext context,
+    required String? attendanceId,
+    required String? studentRollNumber,
+    required String? attendanceStatus,
+  }) async {
     try {
-      http.Response response = await put(
+      print(studentRollNumber.toString());
+      print(attendanceId);
+      http.Response response = await patch(
           "api/attendance/AddAttendance/$attendanceId",
-          jsonEncode({"attendanceId": StudentAttendanceId}));
+          json.encode({
+            "rollNumber": studentRollNumber.toString(),
+            "attendanceStatus": attendanceStatus,
+          }));
       // print(response.body);
       switch (response.statusCode) {
         case 200:
           var data = await jsonDecode(response.body);
+
           CustomSnackBar.buildSuccessSnackbar(
               context, response.body.toString());
           AttendanceModel attendanceModel = AttendanceModel.fromJson(data);
-          // print(data['data']);
+          print(data['data']['attendance']);
           return attendanceModel;
         default:
           // ignore: use_build_context_synchronously

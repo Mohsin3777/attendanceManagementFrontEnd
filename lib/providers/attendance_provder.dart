@@ -39,6 +39,7 @@ class AttendanceProvider extends ChangeNotifier {
 
     await _attendanceOfDay(context);
     isLoading = false;
+
     notifyListeners();
   }
 
@@ -46,5 +47,55 @@ class AttendanceProvider extends ChangeNotifier {
     attendanceModel = await attendanceService.getAttendance();
 
     notifyListeners();
+  }
+
+  updateAttenceModel(int index, String status) {
+    attendanceModel!.data!.attendance![index].status = status;
+    notifyListeners();
+  }
+
+  //mark attendance
+
+  Future markAttendance({
+    required int index,
+    required BuildContext context,
+    required String? attendanceId,
+    required String? studentRollNumber,
+  }) async {
+    // isLoading = true;
+
+    String status = 'present';
+    if (attendanceModel!.data!.attendance![index].status == 'present') {
+      status = 'absent';
+      await _markAttendance(
+          context: context,
+          attendanceId: attendanceId!,
+          studentRollNumber: studentRollNumber!,
+          attendanceStatus: status);
+      isLoading = false;
+      notifyListeners();
+    } else {
+      status = 'present';
+      await _markAttendance(
+          context: context,
+          attendanceId: attendanceId!,
+          studentRollNumber: studentRollNumber!,
+          attendanceStatus: status!);
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  _markAttendance({
+    required BuildContext context,
+    required String? attendanceId,
+    required String? studentRollNumber,
+    required String? attendanceStatus,
+  }) async {
+    await attendanceService.makeSinglePresent(
+        context: context,
+        attendanceId: attendanceId!,
+        studentRollNumber: studentRollNumber!,
+        attendanceStatus: attendanceStatus!);
   }
 }

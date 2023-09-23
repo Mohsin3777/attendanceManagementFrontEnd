@@ -29,6 +29,15 @@ Future<http.Response> put(String endPoint, body) {
       headers: {'Content-Type': 'application/json'}, body: body);
 }
 
+//patch request
+Future<http.Response> patch(String endPoint, body) {
+  String url = AppConstants.baseUrl + endPoint;
+
+  Uri uri = Uri.parse(url);
+  return http.patch(uri,
+      headers: {'Content-Type': 'application/json'}, body: body);
+}
+
 //post with token
 Future<http.Response> postWithToken(String endPoint) async {
   // var token = await getUserTokenFromSharedPref();

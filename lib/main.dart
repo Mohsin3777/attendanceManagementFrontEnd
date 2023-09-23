@@ -3,6 +3,7 @@ import 'package:attendance_system/providers/attendance_provder.dart';
 import 'package:attendance_system/providers/user_document_provider.dart';
 import 'package:attendance_system/screens/auth/create_user.dart';
 import 'package:attendance_system/screens/auth/signup.dart';
+import 'package:attendance_system/screens/splash.dart';
 import 'package:attendance_system/screens/user/all_user_screen.dart';
 import 'package:attendance_system/screens/attendance_screen.dart';
 import 'package:attendance_system/services/http_services/attendance_service/attendance_service.dart';
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 primarySwatch: Colors.blue,
               ),
-              home: HomeScreen(),
+              home: SplashScreen(),
             );
           }),
     );
