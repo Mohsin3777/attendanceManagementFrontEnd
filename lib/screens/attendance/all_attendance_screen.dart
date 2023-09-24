@@ -16,6 +16,7 @@ class AllAttendanceScreen extends StatefulWidget {
 }
 
 class _AllAttendanceScreenState extends State<AllAttendanceScreen> {
+  @override
   void initState() {
     super.initState();
     final provider = Provider.of<AttendanceProvider>(context, listen: false);
@@ -35,60 +36,59 @@ class _AllAttendanceScreenState extends State<AllAttendanceScreen> {
       appBar: AppBar(),
       body: Consumer<AttendanceProvider>(
         builder: (context, value, child) {
-          // return value.isLoading == true
-          //     ? Center(
-          //         child: CircularProgressIndicator(),
-          //       )
-          //     :
-
-          return Container(
-              height: 400,
-              width: 300,
+          return value.isLoading == true
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              :
+ SizedBox(
+              height: 1.sh,
+              width: 1.sw,
               child: ListView.builder(
                   itemCount: value.attendanceOfAllDays!.length,
                   itemBuilder: (context, index) {
                     return Card(
                       child: Column(
                         children: [
-                          Text('Date'),
+                          Text('Date${value.attendanceOfAllDays![index].date}'),
                           SizedBox(
                             height: 10.h,
                           ),
-                          // Expanded(
-                          //   child: DataTable(
-                          //       dataTextStyle: TextStyle(
-                          //         fontSize: 10.sp,
-                          //         color: Colors.red,
-                          //       ),
-                          //       dataRowColor:
-                          //           MaterialStateProperty.all(Colors.white),
-                          //       headingRowColor:
-                          //           MaterialStateProperty.all(Colors.blue),
-                          //       decoration: BoxDecoration(
-                          //         color: Colors.grey.shade100,
-                          //         border: Border.all(color: Colors.grey),
-                          //         borderRadius: BorderRadius.circular(20),
-                          //       ),
-                          //       border: TableBorder.all(),
-                          //       // Datatable widget that have the property columns and rows.
-
-                          //       columns: tableHeader(length: 6, names: [
-                          //         'RollNo',
-                          //         "Name",
-                          //         "email",
-                          //         "status",
-                          //         "Attendance",
-                          //         'Button'
-                          //       ]),
-                          //       rows: List.generate(
-                          //         value.attendanceOfAllDays![index].data!
-                          //             .attendance!.length,
-                          //         (ind) => tableBody(
-                          //             index: ind,
-                          //             attendanceModel:
-                          //                 value.attendanceOfAllDays![index]),
-                          //       )),
-                          // )
+                          FittedBox(
+                            child: DataTable(
+                                dataTextStyle: TextStyle(
+                                  fontSize: 10.sp,
+                                  color: Colors.red,
+                                ),
+                                dataRowColor:
+                                    MaterialStateProperty.all(Colors.white),
+                                headingRowColor:
+                                    MaterialStateProperty.all(Colors.blue),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade100,
+                                  border: Border.all(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                border: TableBorder.all(),
+                                // Datatable widget that have the property columns and rows.
+                            
+                                columns: tableHeader(length: 6, names: [
+                                  'RollNo',
+                                  "Name",
+                                  "email",
+                                  "status",
+                                  "Attendance",
+                                  'Button'
+                                ]),
+                                rows: List.generate(
+                                  value.attendanceOfAllDays![index]
+                                      .attendance!.length,
+                                  (ind) => tableBody(
+                                      index: ind,
+                                      attendanceModel:
+                                          value.attendanceOfAllDays![index]),
+                                )),
+                          )
                         ],
                       ),
                     );
@@ -112,19 +112,19 @@ class _AllAttendanceScreenState extends State<AllAttendanceScreen> {
     return DataRow(
       cells: [
         DataCell(
-          Text(attendanceModel!.data!.attendance![index].rollNumber ?? ''),
+          Text(attendanceModel!.attendance![index].rollNumber ?? ''),
         ),
         DataCell(
-          Text(attendanceModel.data!.attendance![index].name ?? ''),
+          Text(attendanceModel.attendance![index].name ?? ''),
         ),
         DataCell(
-          Text(attendanceModel.data!.attendance![index].email ?? ''),
+          Text(attendanceModel.attendance![index].email ?? ''),
         ),
         DataCell(
-          Text(attendanceModel.data!.attendance![index].status ?? ''),
+          Text(attendanceModel.attendance![index].status ?? ''),
         ),
         DataCell(
-          Text(attendanceModel.data!.attendance![index].registered.toString()),
+          Text(attendanceModel.attendance![index].registered.toString()),
         ),
         DataCell(ElevatedButton(
             child: const Text('Attendance'), onPressed: () async {})),

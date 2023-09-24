@@ -7,7 +7,7 @@ class AttendanceProvider extends ChangeNotifier {
   AttendanceService attendanceService = AttendanceService();
   List<AttendanceModel>? attendanceOfAllDays = [];
   AttendanceModel? attendanceModel =
-      AttendanceModel(data: Data(attendance: [], date: '', dayNo: ''));
+      AttendanceModel();
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -50,7 +50,7 @@ class AttendanceProvider extends ChangeNotifier {
   }
 
   updateAttenceModel(int index, String status) {
-    attendanceModel!.data!.attendance![index].status = status;
+    attendanceModel!.attendance![index].status = status;
     notifyListeners();
   }
 
@@ -65,7 +65,7 @@ class AttendanceProvider extends ChangeNotifier {
     // isLoading = true;
 
     String status = 'present';
-    if (attendanceModel!.data!.attendance![index].status == 'present') {
+    if (attendanceModel!.attendance![index].status == 'present') {
       status = 'absent';
       await _markAttendance(
           context: context,
@@ -100,7 +100,7 @@ class AttendanceProvider extends ChangeNotifier {
   }
 
 //get all attendance
-  //create attendnace
+
   Future getAllDayAttendance(BuildContext context) async {
     isLoading = true;
 
@@ -114,10 +114,6 @@ class AttendanceProvider extends ChangeNotifier {
 
     attendanceOfAllDays = await attendanceService.getAllDaysAttendance();
 
-    // attendanceOfAllDays = atten;
-
-    print(attendanceOfAllDays![0].data!.toString() +
-        'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
     notifyListeners();
   }
 }

@@ -47,7 +47,7 @@ class AttendanceService {
       // print(response.body);
       switch (response.statusCode) {
         case 200:
-          var data = await jsonDecode(response.body);
+          var data = await jsonDecode(response.body)['data'];
 
           AttendanceModel attendanceModel = AttendanceModel.fromJson(data);
           // print(data['data']);
@@ -135,7 +135,7 @@ class AttendanceService {
           for (var i = 0; i < data['data']!.length; i++) {
             attendanceModelList.add(AttendanceModel.fromJson(data['data'][i]));
           }
-          print(attendanceModelList[0].data!.attendance);
+          print(attendanceModelList[0].date);
           return attendanceModelList;
         default:
           throw Exception(response.reasonPhrase);

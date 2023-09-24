@@ -34,8 +34,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   color: Colors.black12,
                   child: Column(
                     children: [
-                      if (value.attendanceModel!.data!.attendance != null)
-                        Text(value.attendanceModel!.data!.sId.toString()),
+                      if (value.attendanceModel!.attendance != null)
+                        Text(value.attendanceModel!.sId.toString()),
                       // Expanded(
                       //     child: ListView.builder(
                       //         itemCount: value.attendanceModel != null
@@ -89,7 +89,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                   'Button'
                                 ]),
                                 rows: List.generate(
-                                  value.attendanceModel!.data!.attendance!
+                                  value.attendanceModel!.attendance!
                                       .length,
                                   (index) => tableBody(
                                       index: index,
@@ -118,26 +118,26 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     return DataRow(
       cells: [
         DataCell(
-          Text(attendanceModel!.data!.attendance![index].rollNumber ?? ''),
+          Text(attendanceModel!.attendance![index].rollNumber ?? ''),
         ),
         DataCell(
-          Text(attendanceModel.data!.attendance![index].name ?? ''),
+          Text(attendanceModel.attendance![index].name ?? ''),
         ),
         DataCell(
-          Text(attendanceModel.data!.attendance![index].email ?? ''),
+          Text(attendanceModel.attendance![index].email ?? ''),
         ),
         DataCell(
-          Text(attendanceModel.data!.attendance![index].status ?? ''),
+          Text(attendanceModel.attendance![index].status ?? ''),
         ),
         DataCell(
-          Text(attendanceModel.data!.attendance![index].registered.toString()),
+          Text(attendanceModel.attendance![index].registered.toString()),
         ),
         DataCell(ElevatedButton(
             child: const Text('Attendance'),
             onPressed: () async {
               AttendanceService attendanceService = AttendanceService();
               String status = 'present';
-              if (attendanceModel.data!.attendance![index].status ==
+              if (attendanceModel.attendance![index].status ==
                   'present') {
                 status = 'absent';
               } else {
@@ -150,13 +150,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               provider.markAttendance(
                 index: index,
                 context: context,
-                attendanceId: attendanceModel.data!.sId.toString(),
+                attendanceId: attendanceModel.sId.toString(),
                 studentRollNumber: attendanceModel
-                    .data!.attendance![index].rollNumber
+                    .attendance![index].rollNumber
                     .toString(),
               );
 
-              print(attendanceModel.data!.dayNo);
+              print(attendanceModel.dayNo);
 
               // Navigator.push(context,
               //     MaterialPageRoute(builder: (context) => HomeScreen()));
