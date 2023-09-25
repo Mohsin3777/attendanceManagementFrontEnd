@@ -4,6 +4,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/attendance_model.dart';
@@ -40,59 +41,63 @@ class _AllAttendanceScreenState extends State<AllAttendanceScreen> {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              :
- SizedBox(
-              height: 1.sh,
-              width: 1.sw,
-              child: ListView.builder(
-                  itemCount: value.attendanceOfAllDays!.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      child: Column(
-                        children: [
-                          Text('Date${value.attendanceOfAllDays![index].date}'),
-                          SizedBox(
-                            height: 10.h,
+              : SizedBox(
+                  height: 1.sh,
+                  width: 1.sw,
+                  child: ListView.builder(
+                      itemCount: value.attendanceOfAllDays!.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: Column(
+                            children: [
+                              Text(DateFormat.yMMMEd().format(DateTime.parse(
+                                  value.attendanceOfAllDays![index].date
+                                      .toString()))),
+
+                              // Text(
+                              //     'Date${value.attendanceOfAllDays![index].date}'),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              FittedBox(
+                                child: DataTable(
+                                    dataTextStyle: TextStyle(
+                                      fontSize: 10.sp,
+                                      color: Colors.red,
+                                    ),
+                                    dataRowColor:
+                                        MaterialStateProperty.all(Colors.white),
+                                    headingRowColor:
+                                        MaterialStateProperty.all(Colors.blue),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey.shade100,
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    border: TableBorder.all(),
+                                    // Datatable widget that have the property columns and rows.
+
+                                    columns: tableHeader(length: 5, names: [
+                                      'RollNo',
+                                      "Name",
+                                      "email",
+                                      "status",
+                                      "Attendance",
+                                      // 'Button'
+                                    ]),
+                                    rows: List.generate(
+                                      value.attendanceOfAllDays![index]
+                                          .attendance!.length,
+                                      (ind) => tableBody(
+                                          index: ind,
+                                          attendanceModel: value
+                                              .attendanceOfAllDays![index]),
+                                    )),
+                              )
+                            ],
                           ),
-                          FittedBox(
-                            child: DataTable(
-                                dataTextStyle: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: Colors.red,
-                                ),
-                                dataRowColor:
-                                    MaterialStateProperty.all(Colors.white),
-                                headingRowColor:
-                                    MaterialStateProperty.all(Colors.blue),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                border: TableBorder.all(),
-                                // Datatable widget that have the property columns and rows.
-                            
-                                columns: tableHeader(length: 6, names: [
-                                  'RollNo',
-                                  "Name",
-                                  "email",
-                                  "status",
-                                  "Attendance",
-                                  'Button'
-                                ]),
-                                rows: List.generate(
-                                  value.attendanceOfAllDays![index]
-                                      .attendance!.length,
-                                  (ind) => tableBody(
-                                      index: ind,
-                                      attendanceModel:
-                                          value.attendanceOfAllDays![index]),
-                                )),
-                          )
-                        ],
-                      ),
-                    );
-                  }));
+                        );
+                      }));
         },
       ),
     );
@@ -126,8 +131,8 @@ class _AllAttendanceScreenState extends State<AllAttendanceScreen> {
         DataCell(
           Text(attendanceModel.attendance![index].registered.toString()),
         ),
-        DataCell(ElevatedButton(
-            child: const Text('Attendance'), onPressed: () async {})),
+        // DataCell(ElevatedButton(
+        //     child: const Text('Attendance'), onPressed: () async {})),
       ],
     );
   }

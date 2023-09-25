@@ -61,40 +61,45 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       //         )
 
                       Expanded(
-                        child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-                                dataTextStyle: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: Colors.red,
-                                ),
-                                dataRowColor:
-                                    MaterialStateProperty.all(Colors.white),
-                                headingRowColor:
-                                    MaterialStateProperty.all(Colors.blue),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                border: TableBorder.all(),
-                                // Datatable widget that have the property columns and rows.
+                        child: FittedBox(
+                          child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: DataTable(
+                                  dataTextStyle: TextStyle(
+                                    fontSize: 10.sp,
+                                    color: Colors.red,
+                                  ),
+                                  dataRowColor:
+                                      MaterialStateProperty.all(Colors.white),
+                                  headingRowColor:
+                                      MaterialStateProperty.all(Colors.blue),
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey.shade100,
+                                    border: Border.all(color: Colors.grey),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  border: TableBorder.all(),
+                                  // Datatable widget that have the property columns and rows.
 
-                                columns: tableHeader(length: 6, names: [
-                                  'RollNo',
-                                  "Name",
-                                  "email",
-                                  "status",
-                                  "Attendance",
-                                  'Button'
-                                ]),
-                                rows: List.generate(
-                                  value.attendanceModel!.attendance!
-                                      .length,
-                                  (index) => tableBody(
-                                      index: index,
-                                      attendanceModel: value.attendanceModel!),
-                                ))),
+                                  columns: tableHeader(length: 9, names: [
+                                    'RollNo',
+                                    "Name",
+                                    "email",
+                                    "status",
+                                    "Registered",
+                                    'Button',
+                                    "ArrivalTime",
+                                    "EndTime",
+                                    "TotalTimeSpend"
+                                  ]),
+                                  rows: List.generate(
+                                    value.attendanceModel!.attendance!.length,
+                                    (index) => tableBody(
+                                        index: index,
+                                        attendanceModel:
+                                            value.attendanceModel!),
+                                  ))),
+                        ),
                       )
                     ],
                   ),
@@ -137,8 +142,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             onPressed: () async {
               AttendanceService attendanceService = AttendanceService();
               String status = 'present';
-              if (attendanceModel.attendance![index].status ==
-                  'present') {
+              if (attendanceModel.attendance![index].status == 'present') {
                 status = 'absent';
               } else {
                 status = 'present';
@@ -151,12 +155,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 index: index,
                 context: context,
                 attendanceId: attendanceModel.sId.toString(),
-                studentRollNumber: attendanceModel
-                    .attendance![index].rollNumber
-                    .toString(),
+                studentRollNumber:
+                    attendanceModel.attendance![index].rollNumber.toString(),
               );
-
-              print(attendanceModel.dayNo);
 
               // Navigator.push(context,
               //     MaterialPageRoute(builder: (context) => HomeScreen()));
@@ -172,6 +173,54 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
               provider.updateAttenceModel(index, status);
             })),
+        DataCell(
+          // Text(attendanceModel.attendance![index].arrivalTime.toString()),
+          ElevatedButton(
+            child:
+                Text(attendanceModel.attendance![index].arrivalTime.toString()),
+            onPressed: () async {
+              final provider =
+                  Provider.of<AttendanceProvider>(context, listen: false);
+              provider.markArrivalTimeAttendance(
+                index: index,
+                context: context,
+                attendanceId: attendanceModel.sId.toString(),
+                studentRollNumber:
+                    attendanceModel.attendance![index].rollNumber.toString(),
+              );
+
+              provider.updateArrivalTmeinListWithStatus(
+                  index: index,
+                  status: 'present',
+                  arrivalTime: DateTime.now().toString());
+            },
+          ),
+        ),
+        DataCell(
+          ElevatedButton(
+            child: Text(attendanceModel.attendance![index].endTime.toString()),
+            onPressed: () async {
+              final provider =
+                  Provider.of<AttendanceProvider>(context, listen: false);
+              provider.markEndTimeAttendance(
+                index: index,
+                context: context,
+                attendanceId: attendanceModel.sId.toString(),
+                studentRollNumber:
+                    attendanceModel.attendance![index].rollNumber.toString(),
+                    
+              );
+
+              provider.updateEndTimeListWithTotalHours(
+                  index: index,
+                  totalTimeSpend: '',
+                  endTime: DateTime.now().toString());
+            },
+          ),
+        ),
+        DataCell(
+          Text(attendanceModel.attendance![index].totalTimeSpend.toString()),
+        ),
       ],
     );
   }

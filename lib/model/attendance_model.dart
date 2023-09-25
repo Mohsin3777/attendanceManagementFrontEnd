@@ -112,8 +112,6 @@
 //   }
 // }
 
-
-
 class AttendanceModel {
   String? sId;
   String? date;
@@ -171,6 +169,9 @@ class Attendance {
   bool? registered;
   String? status;
   int? iV;
+  String? arrivalTime;
+  String? endTime;
+  String? totalTimeSpend;
 
   Attendance(
       {this.sId,
@@ -180,6 +181,9 @@ class Attendance {
       this.profilePic,
       this.registered,
       this.status,
+      this.arrivalTime,
+      this.endTime,
+      this.totalTimeSpend,
       this.iV});
 
   Attendance.fromJson(Map<String, dynamic> json) {
@@ -190,6 +194,9 @@ class Attendance {
     profilePic = json['profilePic'];
     registered = json['registered'];
     status = json['status'];
+    arrivalTime = json['arrivalTime'];
+    endTime = json['endTime'];
+    totalTimeSpend = json['totalTimeSpend'];
     iV = json['__v'];
   }
 
@@ -203,6 +210,9 @@ class Attendance {
     data['registered'] = this.registered;
     data['status'] = this.status;
     data['__v'] = this.iV;
+    data['arrivalTime'] = this.arrivalTime;
+    data['endTime'] = this.endTime;
+    data['totalTimeSpend'] = this.totalTimeSpend;
     return data;
   }
 }
