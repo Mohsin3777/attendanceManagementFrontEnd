@@ -109,27 +109,16 @@ class AttendanceProvider extends ChangeNotifier {
     // isLoading = true;
 
     String status = 'present';
-    if (attendanceModel!.attendance![index].status == 'present') {
-      // status = 'absent';
-      status = 'present';
 
-      await _markAttendance(
-          context: context,
-          attendanceId: attendanceId!,
-          studentRollNumber: studentRollNumber!,
-          attendanceStatus: status);
-      isLoading = false;
-      notifyListeners();
-    } else {
-      status = 'present';
-      await _markArrivalTimeAttendance(
-          context: context,
-          attendanceId: attendanceId!,
-          studentRollNumber: studentRollNumber!,
-          attendanceStatus: status);
-      isLoading = false;
-      notifyListeners();
-    }
+    // status = 'absent';
+
+    await _markArrivalTimeAttendance(
+        context: context,
+        attendanceId: attendanceId!,
+        studentRollNumber: studentRollNumber!,
+        attendanceStatus: status);
+    isLoading = false;
+    notifyListeners();
   }
 
   _markArrivalTimeAttendance({
@@ -158,31 +147,31 @@ class AttendanceProvider extends ChangeNotifier {
 //arrival time end xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 //end time with total hours
-  Future markEndTimeAttendance(
-      {required int index,
-      required BuildContext context,
-      required String? attendanceId,
-      required String? studentRollNumber,
-   }) async {
+  Future markEndTimeAttendance({
+    required int index,
+    required BuildContext context,
+    required String? attendanceId,
+    required String? studentRollNumber,
+  }) async {
     // isLoading = true;
 
     await _markEndTimeAttendance(
-        context: context,
-        attendanceId: attendanceId!,
-        studentRollNumber: studentRollNumber!,
-        );
+      context: context,
+      attendanceId: attendanceId!,
+      studentRollNumber: studentRollNumber!,
+    );
   }
 
-  _markEndTimeAttendance(
-      {required BuildContext context,
-      required String? attendanceId,
-      required String? studentRollNumber,
+  _markEndTimeAttendance({
+    required BuildContext context,
+    required String? attendanceId,
+    required String? studentRollNumber,
   }) async {
     await attendanceService.markEndTime(
-        context: context,
-        attendanceId: attendanceId!,
-        studentRollNumber: studentRollNumber!,
-     );
+      context: context,
+      attendanceId: attendanceId!,
+      studentRollNumber: studentRollNumber!,
+    );
   }
 
   updateEndTimeListWithTotalHours(

@@ -131,13 +131,14 @@ class AttendanceService {
     required String? attendanceStatus,
   }) async {
     try {
-      print(studentRollNumber.toString());
-      print(attendanceId);
+      // print(studentRollNumber.toString());
+      // print(attendanceId);
       http.Response response = await patch(
           "api/attendance/markArrivalTime/$attendanceId",
-          json.encode({
+          jsonEncode({
             "rollNumber": studentRollNumber.toString(),
-            // "attendanceStatus": "present",
+            "attendanceStatus": "present",
+            "arrivalTime": DateTime.now().toString()
           }));
       // print(response.body);
       switch (response.statusCode) {
@@ -147,10 +148,9 @@ class AttendanceService {
           CustomSnackBar.buildSuccessSnackbar(
               context, response.body.toString());
           AttendanceModel attendanceModel = AttendanceModel.fromJson(data);
-          print(data['data']['attendance']);
+          print(data['data']['attendance'][0]['arrivalTime']);
           return attendanceModel;
         default:
-          // ignore: use_build_context_synchronously
           CustomSnackBar.buildErrorSnackbar(
               context, response.reasonPhrase.toString());
 
@@ -186,6 +186,7 @@ class AttendanceService {
           "api/attendance/markEndTime/$attendanceId",
           json.encode({
             "rollNumber": studentRollNumber.toString(),
+            "endTime": DateTime.now().toString()
           }));
       // print(response.body);
       switch (response.statusCode) {
@@ -227,7 +228,6 @@ class AttendanceService {
       switch (response.statusCode) {
         case 200:
           var data = await jsonDecode(response.body);
-          AttendanceModel attendanceModel = AttendanceModel();
           List<AttendanceModel>? attendanceModelList = [];
           for (var i = 0; i < data['data']!.length; i++) {
             attendanceModelList.add(AttendanceModel.fromJson(data['data'][i]));
