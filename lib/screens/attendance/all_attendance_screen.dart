@@ -82,7 +82,7 @@ class _AllAttendanceScreenState extends State<AllAttendanceScreen> {
                                       "Name",
                                       "email",
                                       "status",
-                                      "Attendance",
+                                      "TotlaTime",
                                       // 'Button'
                                     ]),
                                     rows: List.generate(
@@ -129,7 +129,7 @@ class _AllAttendanceScreenState extends State<AllAttendanceScreen> {
           Text(attendanceModel.attendance![index].status ?? ''),
         ),
         DataCell(
-          Text(attendanceModel.attendance![index].registered.toString()),
+          Text(attendanceModel.attendance![index].totalTimeSpend.toString()),
         ),
         // DataCell(ElevatedButton(
         //     child: const Text('Attendance'), onPressed: () async {})),

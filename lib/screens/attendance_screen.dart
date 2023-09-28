@@ -202,10 +202,12 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           // Text(attendanceModel.attendance![index].arrivalTime.toString()),
 
           ElevatedButton(
-            child: Text(attendanceModel.attendance![index].arrivalTime != ''
+            child: Text((attendanceModel.attendance![index].arrivalTime != '' &&
+                    attendanceModel.attendance![index].arrivalTime != null)
                 ? DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.parse(
                     attendanceModel.attendance![index].arrivalTime.toString()))
                 : ''),
+            // child: Text(''),
             onPressed: attendanceModel.attendance![index].status == 'present'
                 ? null
                 : () async {
@@ -229,10 +231,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         ),
         DataCell(
           ElevatedButton(
-            child: attendanceModel.attendance![index].endTime != ''
-                ? Text(DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.parse(
-                    attendanceModel.attendance![index].endTime.toString())))
-                : Text(''),
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red[50], foregroundColor: Colors.red),
+            child: Text(attendanceModel.attendance![index].endTime != '' &&
+                    attendanceModel.attendance![index].endTime != null
+                ? DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.parse(
+                    attendanceModel.attendance![index].endTime.toString()))
+                : ''),
             onPressed: attendanceModel.attendance![index].status == 'absent'
                 ? null
                 : () async {
