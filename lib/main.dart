@@ -6,7 +6,7 @@ import 'package:attendance_system/screens/auth/create_user.dart';
 import 'package:attendance_system/screens/auth/signup.dart';
 import 'package:attendance_system/screens/splash.dart';
 import 'package:attendance_system/screens/user/all_user_screen.dart';
-import 'package:attendance_system/screens/attendance_screen.dart';
+import 'package:attendance_system/screens/attendance/attendance_screen.dart';
 import 'package:attendance_system/services/http_services/attendance_service/attendance_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

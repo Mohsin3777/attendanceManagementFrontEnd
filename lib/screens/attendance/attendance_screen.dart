@@ -1,4 +1,6 @@
 import 'package:attendance_system/providers/attendance_provder.dart';
+import 'package:attendance_system/screens/attendance/all_attendance_screen.dart';
+import 'package:attendance_system/screens/attendance/widgets/header_transparent_tile.dart';
 import 'package:attendance_system/screens/home_screen.dart';
 import 'package:attendance_system/services/http_services/attendance_service/attendance_service.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +11,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-import '../model/attendance_model.dart';
-import '../widgets/custom_snackbar.dart';
+import '../../model/attendance_model.dart';
+import '../../widgets/custom_snackbar.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({super.key});
@@ -19,102 +21,80 @@ class AttendanceScreen extends StatefulWidget {
   State<AttendanceScreen> createState() => _AttendanceScreenState();
 }
 
+List<String> tableHeadingList =[
+        'RollNo',
+                                      "Name",
+                                      "email",
+                                      "status",
+                                      "Registered",
+                                      // 'Button',
+                                      "ArrivalTime",
+                                      "EndTime",
+                                      // "TotalTimeSpend"
+];
+
 class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          CustomElevatedButton(
-            childText: 'aaa',
-            onpress: () {},
-            status: 'present',
-          )
-        ],
-      ),
-      body: Consumer<AttendanceProvider>(
-        builder: (context, value, child) {
-          // print(value.attendanceModel.toString() + 'AAAAAAAAAdtrafa');
-          return value.isLoading == true
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Container(
-                  width: 1.sw,
-                  color: Colors.black12,
-                  child: Column(
-                    children: [
-                      if (value.attendanceModel!.attendance != null)
-                        Text(value.attendanceModel!.sId.toString()),
-                      // Expanded(
-                      //     child: ListView.builder(
-                      //         itemCount: value.attendanceModel != null
-                      //             ? value
-                      //                 .attendanceModel!.data!.attendance?.length
-                      //             : 0,
-                      //         // itemCount: 0,
-                      //         itemBuilder: (context, index) {
-                      //           return Card(
-                      //             child: Column(
-                      //               children: [
-                      //                 Text("Name  "
-                      //                     "${value.attendanceModel!.data!.attendance![index].studentId!.name}"
-                      //                     ''),
-                      //                 Text("RollNumber  "
-                      //                     "${value.attendanceModel!.data!.attendance![index].studentId!.rollNumber}"
-                      //                     ''),
-                      //               ],
-                      //             ),
-                      //           );
-                      //         }),
-
-                      //         )
-
-                      Expanded(
-                        child: FittedBox(
-                          child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: DataTable(
-                                  dataTextStyle: TextStyle(
-                                    fontSize: 10.sp,
-                                    color: Colors.red,
-                                  ),
-                                  dataRowColor:
-                                      MaterialStateProperty.all(Colors.white),
-                                  headingRowColor: MaterialStateProperty.all(
-                                      Colors.redAccent),
-                                  // decoration: BoxDecoration(
-                                  //   color: Colors.grey.shade100,
-                                  //   border: Border.all(color: Colors.grey),
-                                  //   borderRadius: BorderRadius.circular(20),
-                                  // ),
-                                  // border: TableBorder.all(),
-                                  // Datatable widget that have the property columns and rows.
-
-                                  columns: tableHeader(length: 9, names: [
-                                    'RollNo',
-                                    "Name",
-                                    "email",
-                                    "status",
-                                    "Registered",
-                                    'Button',
-                                    "ArrivalTime",
-                                    "EndTime",
-                                    "TotalTimeSpend"
-                                  ]),
-                                  rows: List.generate(
-                                    value.attendanceModel!.attendance!.length,
-                                    (index) => tableBody(
-                                        index: index,
-                                        attendanceModel:
-                                            value.attendanceModel!),
-                                  ))),
-                        ),
-                      )
-                    ],
-                  ),
-                );
-        },
+  
+      body: Container(
+                height: 1.sh,
+        width: 1.sw,
+        decoration: const BoxDecoration(
+          image: DecorationImage(image: NetworkImage('https://images.unsplash.com/photo-1564069114553-7215e1ff1890?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80'),fit: BoxFit.cover)
+        ),
+        child: Consumer<AttendanceProvider>(
+          builder: (context, value, child) {
+            // print(value.attendanceModel.toString() + 'AAAAAAAAAdtrafa');
+            return value.isLoading == true
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(
+                    // width: 1.sw,
+                    color: Colors.black12,
+                    margin: EdgeInsets.symmetric(horizontal: 10.h),
+                    child: Column(
+                      children: [
+                        // if (value.attendanceModel!.attendance != null)
+                        //   Text(value.attendanceModel!.sId.toString()),
+                SizedBox(height: 30.h,),
+ HeaderTile(title: 'TODAY ATTENDANCE',leftBtn: (){
+  Navigator.pop(context);
+ },),
+SizedBox(height: 20.h,),
+      
+                        Expanded(
+                          child: FittedBox(
+                            child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: DataTable(
+                                    dataTextStyle: TextStyle(
+                                      fontSize: 10.sp,
+                                      color: Colors.red,
+                                    ),
+                                       dataRowColor:
+                                                  MaterialStateProperty.all(Colors.white.withOpacity(0.5)),
+                                              headingRowColor:
+                                                  MaterialStateProperty.all(Colors.grey.withOpacity(0.7)),
+                           
+      
+                                    columns: tableHeader(length:tableHeadingList.length, names: tableHeadingList),
+                                    rows: List.generate(
+                                      value.attendanceModel!.attendance!.length,
+                                      (index) => tableBody(
+                                          index: index,
+                                          attendanceModel:
+                                              value.attendanceModel!),
+                                    ))),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+          },
+        ),
       ),
     );
   }
@@ -162,43 +142,43 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           ),
         ),
         DataCell(
-          Text(attendanceModel.attendance![index].registered.toString()),
+          Text(attendanceModel.attendance![index].registered.toString() ,style: _CustomDataCellTextDecoration,),
         ),
-        DataCell(ElevatedButton(
-            child: const Text('Attendance'),
-            onPressed: () async {
-              AttendanceService attendanceService = AttendanceService();
-              String status = 'present';
-              if (attendanceModel.attendance![index].status == 'present') {
-                status = 'absent';
-              } else {
-                status = 'present';
-              }
+        // DataCell(ElevatedButton(
+        //     child: const Text('Attendance'),
+        //     onPressed: () async {
+        //       AttendanceService attendanceService = AttendanceService();
+        //       String status = 'present';
+        //       if (attendanceModel.attendance![index].status == 'present') {
+        //         status = 'absent';
+        //       } else {
+        //         status = 'present';
+        //       }
 
-              final provider =
-                  Provider.of<AttendanceProvider>(context, listen: false);
-              provider.markAttendance(
-                index: index,
-                context: context,
-                attendanceId: attendanceModel.sId.toString(),
-                studentRollNumber:
-                    attendanceModel.attendance![index].rollNumber.toString(),
-              );
+        //       final provider =
+        //           Provider.of<AttendanceProvider>(context, listen: false);
+        //       provider.markAttendance(
+        //         index: index,
+        //         context: context,
+        //         attendanceId: attendanceModel.sId.toString(),
+        //         studentRollNumber:
+        //             attendanceModel.attendance![index].rollNumber.toString(),
+        //       );
 
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => HomeScreen()));
-              // val.updateAttenceModel(index, status);
+        //       // Navigator.push(context,
+        //       //     MaterialPageRoute(builder: (context) => HomeScreen()));
+        //       // val.updateAttenceModel(index, status);
 
-              // await attendanceService.makeSinglePresent(
-              //     context: context,
-              //     attendanceId: attendanceModel.data!.sId.toString(),
-              //     studentRollNumber: attendanceModel
-              //         .data!.attendance![index].rollNumber
-              //         .toString(),
-              //     attendanceStatus: status);
+        //       // await attendanceService.makeSinglePresent(
+        //       //     context: context,
+        //       //     attendanceId: attendanceModel.data!.sId.toString(),
+        //       //     studentRollNumber: attendanceModel
+        //       //         .data!.attendance![index].rollNumber
+        //       //         .toString(),
+        //       //     attendanceStatus: status);
 
-              provider.updateAttenceModel(index, status);
-            })),
+        //       provider.updateAttenceModel(index, status);
+        //     })),
         DataCell(
           // Text(attendanceModel.attendance![index].arrivalTime.toString()),
 
@@ -265,9 +245,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   },
           ),
         ),
-        DataCell(
-          Text(attendanceModel.attendance![index].totalTimeSpend.toString()),
-        ),
+        // DataCell(
+        //   Text(attendanceModel.attendance![index].totalTimeSpend.toString()),
+        // ),
       ],
     );
   }

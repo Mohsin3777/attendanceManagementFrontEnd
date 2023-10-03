@@ -1,4 +1,5 @@
 import 'package:attendance_system/providers/attendance_provder.dart';
+import 'package:attendance_system/screens/attendance/widgets/header_transparent_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -45,7 +46,11 @@ class _AllAttendanceScreenState extends State<AllAttendanceScreen> {
           children: [
                         
 SizedBox(height: 30.h,),
-HeaderTile(),
+HeaderTile(title: 'ALL DAYS ATTENDANCE',
+leftBtn: (){
+  Navigator.pop(context);
+ },
+),
 SizedBox(height: 20.h,),
              Consumer<AttendanceProvider>(
           builder: (context, value, child) {
@@ -71,44 +76,41 @@ SizedBox(height: 20.h,),
                                 SizedBox(
                                   height: 10.h,
                                 ),
-                                Container(
-                             
-                                  child: FittedBox(
-                                    child: DataTable(
-                                        
+                                FittedBox(
+                                  child: DataTable(
+                                      
                                 dataTextStyle: TextStyle(
-                                  fontSize: 14.sp,
-                                  color: Colors.black87,
+                                fontSize: 14.sp,
+                                color: Colors.black87,
                                 ),
-                                                dataRowColor:
-                                                    MaterialStateProperty.all(Colors.white.withOpacity(0.5)),
-                                                headingRowColor:
-                                                    MaterialStateProperty.all(Colors.grey.withOpacity(0.7)),
-                                        decoration: BoxDecoration(
-                                          // color: Colors.grey.shade100,
-                                          // border: Border.all(color: Colors.grey),
-                                          borderRadius: BorderRadius.circular(20),
-                                        ),
-                                        // border: TableBorder.all(),
-                                        // Datatable widget that have the property columns and rows.
-                                                      
-                                        columns: tableHeader(length: 5, names: [
-                                          'RollNo',
-                                          "Name",
-                                          "email",
-                                          "status",
-                                          "TotalTime",
-                                          // 'Button'
-                                        ]),
-                                        rows: List.generate(
-                                          value.attendanceOfAllDays![index]
-                                              .attendance!.length,
-                                          (ind) => tableBody(
-                                              index: ind,
-                                              attendanceModel: value
-                                                  .attendanceOfAllDays![index]),
-                                        )),
-                                  ),
+                                              dataRowColor:
+                                                  MaterialStateProperty.all(Colors.white.withOpacity(0.5)),
+                                              headingRowColor:
+                                                  MaterialStateProperty.all(Colors.grey.withOpacity(0.7)),
+                                      decoration: BoxDecoration(
+                                        // color: Colors.grey.shade100,
+                                        // border: Border.all(color: Colors.grey),
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      // border: TableBorder.all(),
+                                      // Datatable widget that have the property columns and rows.
+                                                    
+                                      columns: tableHeader(length: 5, names: [
+                                        'RollNo',
+                                        "Name",
+                                        "email",
+                                        "status",
+                                        "TotalTime",
+                                        // 'Button'
+                                      ]),
+                                      rows: List.generate(
+                                        value.attendanceOfAllDays![index]
+                                            .attendance!.length,
+                                        (ind) => tableBody(
+                                            index: ind,
+                                            attendanceModel: value
+                                                .attendanceOfAllDays![index]),
+                                      )),
                                 )
                               ],
                             );
@@ -181,36 +183,3 @@ SizedBox(height: 20.h,),
 
 
 
-class HeaderTile extends StatelessWidget {
-  const HeaderTile({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return     Container(
-      width: 0.8.sw,
-      height: 100.h,
-    decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(20.r)
-    ),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(onPressed: (){
-          Navigator.pop(context);
-        }, icon: Icon(Icons.arrow_back,color: Colors.white,)),
-        Flexible(
-          child: Text('ALL DAYS ATTENDANCE',
-        
-          style: TextStyle(fontSize: 25.sp,fontWeight: FontWeight.bold,color: Colors.white),
-          ),
-        ),
-        Text('')
-           
-      ],
-    ),
-    );
-  }
-}
