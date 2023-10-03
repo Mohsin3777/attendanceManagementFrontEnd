@@ -33,43 +33,78 @@ class _AllAttendanceScreenState extends State<AllAttendanceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Consumer<AttendanceProvider>(
-        builder: (context, value, child) {
-          return value.isLoading == true
-              ? Center(
-                  child: CircularProgressIndicator(),
-                )
-              :
- SizedBox(
-              height: 1.sh,
-              width: 1.sw,
-              child: ListView.builder(
-                  itemCount: value.attendanceOfAllDays!.length,
-                  itemBuilder: (context, index) {
-                    return Card(
-                      child: Column(
-                        children: [
-                          Text('Date${value.attendanceOfAllDays![index].date}'),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          FittedBox(
+      // appBar: AppBar(),
+      body: Container(
+             height: 1.sh,
+        width: 1.sw,
+        decoration: const BoxDecoration(
+          image: DecorationImage(image: NetworkImage('https://images.unsplash.com/photo-1564069114553-7215e1ff1890?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80'),fit: BoxFit.cover)
+        ),
+        child: Column(
+          children: [
+            
+SizedBox(height: 30.h,),
+Container(
+  width: 0.8.sw,
+  height: 100.h,
+decoration: BoxDecoration(
+    color: Colors.grey.withOpacity(0.3),
+    borderRadius: BorderRadius.circular(20.r)
+),
+child: Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    IconButton(onPressed: (){
+      Navigator.pop(context);
+    }, icon: Icon(Icons.arrow_back,color: Colors.white,)),
+    Flexible(
+      child: Text('ALL DAYS ATTENDANCE',
+    
+      style: TextStyle(fontSize: 25.sp,fontWeight: FontWeight.bold,color: Colors.white),
+      ),
+    ),
+    Text('')
+       
+  ],
+),
+),
+SizedBox(height: 20.h,),
+
+            Expanded(
+              child: Consumer<AttendanceProvider>(
+                      builder: (context, value, child) {
+              return value.isLoading == true
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  :
+                   Container(
+                    // margin: EdgeInsets.symmetric(horizontal: 30.w),
+                  height: 1.sh,
+                  width: 0.8.sw,
+                  child: ListView.builder(
+                      itemCount: value.attendanceOfAllDays!.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          elevation: 29,
+                          color: Colors.white.withOpacity(0.3),
+                          child: FittedBox(
                             child: DataTable(
+                              
                                 dataTextStyle: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: Colors.red,
+                                  fontSize: 14.sp,
+                                  color: Colors.black87,
                                 ),
-                                dataRowColor:
-                                    MaterialStateProperty.all(Colors.white),
-                                headingRowColor:
-                                    MaterialStateProperty.all(Colors.blue),
+                                     dataRowColor:
+                                                  MaterialStateProperty.all(Colors.white.withOpacity(0.3)),
+                                              headingRowColor:
+                                                  MaterialStateProperty.all(Colors.grey.withOpacity(0.9)),
                                 decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  border: Border.all(color: Colors.grey),
+                                  // color: Colors.grey.shade100,
+                                  // border: Border.all(color: Colors.grey),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                border: TableBorder.all(),
+                                // border: TableBorder.all(),
                                 // Datatable widget that have the property columns and rows.
                             
                                 columns: tableHeader(length: 6, names: [
@@ -78,7 +113,8 @@ class _AllAttendanceScreenState extends State<AllAttendanceScreen> {
                                   "email",
                                   "status",
                                   "Attendance",
-                                  'Button'
+                                  'Button',
+                                  
                                 ]),
                                 rows: List.generate(
                                   value.attendanceOfAllDays![index]
@@ -88,12 +124,14 @@ class _AllAttendanceScreenState extends State<AllAttendanceScreen> {
                                       attendanceModel:
                                           value.attendanceOfAllDays![index]),
                                 )),
-                          )
-                        ],
-                      ),
-                    );
-                  }));
-        },
+                          ),
+                        );
+                      }));
+                      },
+                    ),
+            ),
+          ],
+        )
       ),
     );
   }
@@ -102,7 +140,7 @@ class _AllAttendanceScreenState extends State<AllAttendanceScreen> {
     return List.generate(
       length,
       (index) => DataColumn(
-        label: Text(names[index]),
+        label: Text(names[index],style: TextStyle(color: Colors.white),),
       ),
     );
   }
