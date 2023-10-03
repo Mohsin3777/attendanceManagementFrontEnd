@@ -44,7 +44,7 @@ class AttendanceService {
     try {
       http.Response response =
           await post("api/attendance/createAttendance", '');
-      // print(response.body);
+      print(response.body);
       switch (response.statusCode) {
         case 200:
           var data = await jsonDecode(response.body)['data'];
@@ -122,6 +122,105 @@ class AttendanceService {
     }
   }
 
+  //markArrivalTime
+  //update status
+  Future<AttendanceModel> markArrivalTime({
+    required BuildContext context,
+    required String? attendanceId,
+    required String? studentRollNumber,
+    required String? attendanceStatus,
+  }) async {
+    try {
+      // print(studentRollNumber.toString());
+      // print(attendanceId);
+      http.Response response = await patch(
+          "api/attendance/markArrivalTime/$attendanceId",
+          jsonEncode({
+            "rollNumber": studentRollNumber.toString(),
+            "attendanceStatus": "present",
+            "arrivalTime": DateTime.now().toString()
+          }));
+      print(response.reasonPhrase);
+      switch (response.statusCode) {
+        case 200:
+          var data = await jsonDecode(response.body);
+
+          CustomSnackBar.buildSuccessSnackbar(
+              context, response.body.toString());
+          AttendanceModel attendanceModel = AttendanceModel.fromJson(data);
+          print(data['data']['attendance'][0]['arrivalTime']);
+          return attendanceModel;
+        default:
+          CustomSnackBar.buildErrorSnackbar(
+              context, response.reasonPhrase.toString());
+
+          throw Exception(response.reasonPhrase);
+      }
+    } on SocketException {
+      CustomSnackBar.buildErrorSnackbar(context, 'NO Internet');
+      throw NoInternetException('No Internet');
+    } on HttpException {
+      CustomSnackBar.buildErrorSnackbar(context, 'No Service Found');
+      throw NoServiceFoundException('No Service Found');
+    } on FormatException {
+      CustomSnackBar.buildErrorSnackbar(context, 'Invalid Data Format');
+      throw InvalidFormatException('Invalid Data Format');
+    } catch (e) {
+
+      CustomSnackBar.buildErrorSnackbar(context, e.toString());
+      throw UnknownException(e.toString());
+    }
+  }
+
+  //markEndTIme
+  //update total hours
+  Future<AttendanceModel> markEndTime({
+    required BuildContext context,
+    required String? attendanceId,
+    required String? studentRollNumber,
+  }) async {
+    try {
+      print(studentRollNumber);
+      print(attendanceId);
+
+      http.Response response = await patch(
+          "api/attendance/markEndTime/$attendanceId",
+          json.encode({
+            "rollNumber": studentRollNumber.toString(),
+            "endTime": DateTime.now().toString()
+          }));
+      // print(response.body);
+      switch (response.statusCode) {
+        case 200:
+          var data = await jsonDecode(response.body);
+
+          CustomSnackBar.buildSuccessSnackbar(
+              context, 'done');
+          AttendanceModel attendanceModel = AttendanceModel.fromJson(data);
+          print(data['data']['attendance']);
+          return attendanceModel;
+        default:
+          // ignore: use_build_context_synchronously
+          CustomSnackBar.buildErrorSnackbar(
+              context, response.reasonPhrase.toString());
+
+          throw Exception(response.reasonPhrase);
+      }
+    } on SocketException {
+      CustomSnackBar.buildErrorSnackbar(context, 'NO Internet');
+      throw NoInternetException('No Internet');
+    } on HttpException {
+      CustomSnackBar.buildErrorSnackbar(context, 'No Service Found');
+      throw NoServiceFoundException('No Service Found');
+    } on FormatException {
+      CustomSnackBar.buildErrorSnackbar(context, 'Invalid Data Format');
+      throw InvalidFormatException('Invalid Data Format');
+    } catch (e) {
+      CustomSnackBar.buildErrorSnackbar(context, e.toString());
+      throw UnknownException(e.toString());
+    }
+  }
+
   //get all days Attendance
   Future<List<AttendanceModel>?> getAllDaysAttendance() async {
     try {
@@ -130,7 +229,6 @@ class AttendanceService {
       switch (response.statusCode) {
         case 200:
           var data = await jsonDecode(response.body);
-          AttendanceModel attendanceModel = AttendanceModel();
           List<AttendanceModel>? attendanceModelList = [];
           for (var i = 0; i < data['data']!.length; i++) {
             attendanceModelList.add(AttendanceModel.fromJson(data['data'][i]));

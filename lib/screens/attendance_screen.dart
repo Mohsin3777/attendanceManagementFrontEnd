@@ -6,9 +6,11 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../model/attendance_model.dart';
+import '../widgets/custom_snackbar.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({super.key});
@@ -21,7 +23,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          CustomElevatedButton(
+            childText: 'aaa',
+            onpress: () {},
+            status: 'present',
+          )
+        ],
+      ),
       body: Consumer<AttendanceProvider>(
         builder: (context, value, child) {
           // print(value.attendanceModel.toString() + 'AAAAAAAAAdtrafa');
@@ -30,7 +40,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   child: CircularProgressIndicator(),
                 )
               : Container(
-                  width: 1000,
+                  width: 1.sw,
                   color: Colors.black12,
                   child: Column(
                     children: [
@@ -61,40 +71,45 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                       //         )
 
                       Expanded(
-                        child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: DataTable(
-                                dataTextStyle: TextStyle(
-                                  fontSize: 10.sp,
-                                  color: Colors.red,
-                                ),
-                                dataRowColor:
-                                    MaterialStateProperty.all(Colors.white),
-                                headingRowColor:
-                                    MaterialStateProperty.all(Colors.blue),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey.shade100,
-                                  border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                border: TableBorder.all(),
-                                // Datatable widget that have the property columns and rows.
+                        child: FittedBox(
+                          child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: DataTable(
+                                  dataTextStyle: TextStyle(
+                                    fontSize: 10.sp,
+                                    color: Colors.red,
+                                  ),
+                                  dataRowColor:
+                                      MaterialStateProperty.all(Colors.white),
+                                  headingRowColor: MaterialStateProperty.all(
+                                      Colors.redAccent),
+                                  // decoration: BoxDecoration(
+                                  //   color: Colors.grey.shade100,
+                                  //   border: Border.all(color: Colors.grey),
+                                  //   borderRadius: BorderRadius.circular(20),
+                                  // ),
+                                  // border: TableBorder.all(),
+                                  // Datatable widget that have the property columns and rows.
 
-                                columns: tableHeader(length: 6, names: [
-                                  'RollNo',
-                                  "Name",
-                                  "email",
-                                  "status",
-                                  "Attendance",
-                                  'Button'
-                                ]),
-                                rows: List.generate(
-                                  value.attendanceModel!.attendance!
-                                      .length,
-                                  (index) => tableBody(
-                                      index: index,
-                                      attendanceModel: value.attendanceModel!),
-                                ))),
+                                  columns: tableHeader(length: 9, names: [
+                                    'RollNo',
+                                    "Name",
+                                    "email",
+                                    "status",
+                                    "Registered",
+                                    'Button',
+                                    "ArrivalTime",
+                                    "EndTime",
+                                    "TotalTimeSpend"
+                                  ]),
+                                  rows: List.generate(
+                                    value.attendanceModel!.attendance!.length,
+                                    (index) => tableBody(
+                                        index: index,
+                                        attendanceModel:
+                                            value.attendanceModel!),
+                                  ))),
+                        ),
                       )
                     ],
                   ),
@@ -108,26 +123,43 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     return List.generate(
       length,
       (index) => DataColumn(
-        label: Text(names[index]),
+        label: Text(
+          names[index],
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
 
   DataRow tableBody(
       {required int index, required AttendanceModel? attendanceModel}) {
+    // print(DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.parse(
+    //     attendanceModel!.attendance![index].arrivalTime.toString())));
     return DataRow(
       cells: [
         DataCell(
-          Text(attendanceModel!.attendance![index].rollNumber ?? ''),
+          Text(
+            attendanceModel!.attendance![index].rollNumber ?? '',
+            style: _CustomDataCellTextDecoration,
+          ),
         ),
         DataCell(
-          Text(attendanceModel.attendance![index].name ?? ''),
+          Text(
+            attendanceModel.attendance![index].name ?? '',
+            style: _CustomDataCellTextDecoration,
+          ),
         ),
         DataCell(
-          Text(attendanceModel.attendance![index].email ?? ''),
+          Text(
+            attendanceModel.attendance![index].email ?? '',
+            style: _CustomDataCellTextDecoration,
+          ),
         ),
         DataCell(
-          Text(attendanceModel.attendance![index].status ?? ''),
+          Text(
+            attendanceModel.attendance![index].status ?? '',
+            style: _CustomDataCellTextDecoration,
+          ),
         ),
         DataCell(
           Text(attendanceModel.attendance![index].registered.toString()),
@@ -137,26 +169,21 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             onPressed: () async {
               AttendanceService attendanceService = AttendanceService();
               String status = 'present';
-              if (attendanceModel.attendance![index].status ==
-                  'present') {
+              if (attendanceModel.attendance![index].status == 'present') {
                 status = 'absent';
               } else {
                 status = 'present';
               }
 
-              print(status);
               final provider =
                   Provider.of<AttendanceProvider>(context, listen: false);
               provider.markAttendance(
                 index: index,
                 context: context,
                 attendanceId: attendanceModel.sId.toString(),
-                studentRollNumber: attendanceModel
-                    .attendance![index].rollNumber
-                    .toString(),
+                studentRollNumber:
+                    attendanceModel.attendance![index].rollNumber.toString(),
               );
-
-              print(attendanceModel.dayNo);
 
               // Navigator.push(context,
               //     MaterialPageRoute(builder: (context) => HomeScreen()));
@@ -172,7 +199,121 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
               provider.updateAttenceModel(index, status);
             })),
+        DataCell(
+          // Text(attendanceModel.attendance![index].arrivalTime.toString()),
+
+          ElevatedButton(
+            child: Text((attendanceModel.attendance![index].arrivalTime != '' &&
+                    attendanceModel.attendance![index].arrivalTime != null)
+                ? DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.parse(
+                    attendanceModel.attendance![index].arrivalTime.toString()))
+                : ''),
+  //  child: Text(DateFormat.yMMMMd().add_Hm().format(DateTime.fromMillisecondsSinceEpoch(int.parse(attendanceModel.attendance![index].arrivalTime!)))),
+            onPressed: attendanceModel.attendance![index].status == 'present'
+                ? null
+                : () async {
+                    final provider =
+                        Provider.of<AttendanceProvider>(context, listen: false);
+                    provider.markArrivalTimeAttendance(
+                      index: index,
+                      context: context,
+                      attendanceId: attendanceModel.sId.toString(),
+                      studentRollNumber: attendanceModel
+                          .attendance![index].rollNumber
+                          .toString(),
+                    );
+
+                    provider.updateArrivalTmeinListWithStatus(
+                        index: index,
+                        status: 'present',
+                        arrivalTime: DateTime.now().toString());
+                  },
+          ),
+        ),
+        DataCell(
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red[50], foregroundColor: Colors.red),
+            child: Text(attendanceModel.attendance![index].endTime != '' &&
+                    attendanceModel.attendance![index].endTime != null
+                ? DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.parse(
+                    attendanceModel.attendance![index].endTime.toString()))
+                : ''),
+            // child: Text(DateFormat.yMMMMd().add_Hm().format(DateTime.fromMillisecondsSinceEpoch(int.parse(attendanceModel.attendance![index].endTime!)))),
+            // child: Text(''),
+            onPressed: attendanceModel.attendance![index].status == 'absent'
+                ? null
+                : () async {
+                    final provider =
+                        Provider.of<AttendanceProvider>(context, listen: false);
+                    provider.markEndTimeAttendance(
+                      index: index,
+                      context: context,
+                      attendanceId: attendanceModel.sId.toString(),
+                      studentRollNumber: attendanceModel
+                          .attendance![index].rollNumber
+                          .toString(),
+                    );
+
+                    provider.updateEndTimeListWithTotalHours(
+                        index: index,
+                        totalTimeSpend: '',
+                        endTime: DateTime.now().toString());
+
+                               CustomSnackBar.buildSuccessSnackbar(
+              context, 'done');
+                  },
+          ),
+        ),
+        DataCell(
+          Text(attendanceModel.attendance![index].totalTimeSpend.toString()),
+        ),
       ],
+    );
+  }
+
+  var _CustomDataCellTextDecoration = TextStyle(
+    color: Colors.black,
+  );
+}
+
+class CustomElevatedButton extends StatelessWidget {
+  final String status;
+  final VoidCallback? onpress;
+  final String childText;
+  const CustomElevatedButton(
+      {super.key,
+      required this.status,
+      required this.onpress,
+      required this.childText});
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: status == 'present' ? null : onpress,
+      child: Text(childText),
+      style: ElevatedButton.styleFrom(
+        textStyle: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+        minimumSize: Size(70.w, 100.h), //change size of this beautiful button
+        // We can change style of this beautiful elevated button thanks to style prop
+        backgroundColor: Colors.red, // we can set primary color
+        foregroundColor: Colors.white, // change color of child prop
+        disabledForegroundColor: Colors.purple, // surface color,
+        disabledBackgroundColor: Colors.yellow,
+        shadowColor: Colors
+            .grey, //shadow prop is a very nice prop for every button or card widgets.
+        elevation: 5, // we can set elevation of this beautiful button
+        side: BorderSide(
+            color: Colors.redAccent.shade400, //change border color
+            width: 2, //change border width
+            style: BorderStyle
+                .solid), // change border side of this beautiful button
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+              30), //change border radius of this beautiful button thanks to BorderRadius.circular function
+        ),
+        tapTargetSize: MaterialTapTargetSize.padded,
+      ),
     );
   }
 }

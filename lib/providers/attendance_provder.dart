@@ -6,8 +6,7 @@ import '../services/http_services/attendance_service/attendance_service.dart';
 class AttendanceProvider extends ChangeNotifier {
   AttendanceService attendanceService = AttendanceService();
   List<AttendanceModel>? attendanceOfAllDays = [];
-  AttendanceModel? attendanceModel =
-      AttendanceModel();
+  AttendanceModel? attendanceModel = AttendanceModel();
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -98,6 +97,94 @@ class AttendanceProvider extends ChangeNotifier {
         studentRollNumber: studentRollNumber!,
         attendanceStatus: attendanceStatus!);
   }
+
+//mark arrivalTIme
+
+  Future markArrivalTimeAttendance({
+    required int index,
+    required BuildContext context,
+    required String? attendanceId,
+    required String? studentRollNumber,
+  }) async {
+    // isLoading = true;
+
+    String status = 'present';
+
+    // status = 'absent';
+
+    await _markArrivalTimeAttendance(
+        context: context,
+        attendanceId: attendanceId!,
+        studentRollNumber: studentRollNumber!,
+        attendanceStatus: status);
+    isLoading = false;
+    notifyListeners();
+  }
+
+  _markArrivalTimeAttendance({
+    required BuildContext context,
+    required String? attendanceId,
+    required String? studentRollNumber,
+    required String? attendanceStatus,
+  }) async {
+    await attendanceService.markArrivalTime(
+        context: context,
+        attendanceId: attendanceId!,
+        studentRollNumber: studentRollNumber!,
+        attendanceStatus: attendanceStatus!);
+  }
+
+  updateArrivalTmeinListWithStatus(
+      {required int index,
+      required String status,
+      required String arrivalTime}) {
+    attendanceModel!.attendance![index].status = status;
+    attendanceModel!.attendance![index].arrivalTime = arrivalTime;
+
+    notifyListeners();
+  }
+
+//arrival time end xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+//end time with total hours
+  Future markEndTimeAttendance({
+    required int index,
+    required BuildContext context,
+    required String? attendanceId,
+    required String? studentRollNumber,
+  }) async {
+    // isLoading = true;
+
+    await _markEndTimeAttendance(
+      context: context,
+      attendanceId: attendanceId!,
+      studentRollNumber: studentRollNumber!,
+    );
+  }
+
+  _markEndTimeAttendance({
+    required BuildContext context,
+    required String? attendanceId,
+    required String? studentRollNumber,
+  }) async {
+    await attendanceService.markEndTime(
+      context: context,
+      attendanceId: attendanceId!,
+      studentRollNumber: studentRollNumber!,
+    );
+  }
+
+  updateEndTimeListWithTotalHours(
+      {required int index,
+      required String totalTimeSpend,
+      required String endTime}) {
+    attendanceModel!.attendance![index].totalTimeSpend = totalTimeSpend;
+    attendanceModel!.attendance![index].endTime = endTime;
+
+    notifyListeners();
+  }
+
+//end time end xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 //get all attendance
 
