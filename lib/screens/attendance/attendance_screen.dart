@@ -3,6 +3,7 @@ import 'package:attendance_system/screens/attendance/all_attendance_screen.dart'
 import 'package:attendance_system/screens/attendance/widgets/header_transparent_tile.dart';
 import 'package:attendance_system/screens/home_screen.dart';
 import 'package:attendance_system/services/http_services/attendance_service/attendance_service.dart';
+import 'package:attendance_system/utils/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -192,7 +193,14 @@ SizedBox(height: 20.h,),
             onPressed: attendanceModel.attendance![index].status == 'present'
                 ? null
                 : () async {
-                    final provider =
+                   
+CustomDialogsCls.showCustomDialog(context: context ,mainButtonText: 'YES',secondButtonText: 'Back',
+titleText: 'MARK ARRIVAL TIME',
+secondButton: (){
+  Navigator.pop(context);
+},
+mainButton: ()async{
+   final provider =
                         Provider.of<AttendanceProvider>(context, listen: false);
                     provider.markArrivalTimeAttendance(
                       index: index,
@@ -207,6 +215,10 @@ SizedBox(height: 20.h,),
                         index: index,
                         status: 'present',
                         arrivalTime: DateTime.now().toString());
+                         Navigator.pop(context);
+}
+);
+
                   },
           ),
         ),
@@ -257,43 +269,4 @@ SizedBox(height: 20.h,),
   );
 }
 
-class CustomElevatedButton extends StatelessWidget {
-  final String status;
-  final VoidCallback? onpress;
-  final String childText;
-  const CustomElevatedButton(
-      {super.key,
-      required this.status,
-      required this.onpress,
-      required this.childText});
 
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: status == 'present' ? null : onpress,
-      child: Text(childText),
-      style: ElevatedButton.styleFrom(
-        textStyle: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
-        minimumSize: Size(70.w, 100.h), //change size of this beautiful button
-        // We can change style of this beautiful elevated button thanks to style prop
-        backgroundColor: Colors.red, // we can set primary color
-        foregroundColor: Colors.white, // change color of child prop
-        disabledForegroundColor: Colors.purple, // surface color,
-        disabledBackgroundColor: Colors.yellow,
-        shadowColor: Colors
-            .grey, //shadow prop is a very nice prop for every button or card widgets.
-        elevation: 5, // we can set elevation of this beautiful button
-        side: BorderSide(
-            color: Colors.redAccent.shade400, //change border color
-            width: 2, //change border width
-            style: BorderStyle
-                .solid), // change border side of this beautiful button
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(
-              30), //change border radius of this beautiful button thanks to BorderRadius.circular function
-        ),
-        tapTargetSize: MaterialTapTargetSize.padded,
-      ),
-    );
-  }
-}

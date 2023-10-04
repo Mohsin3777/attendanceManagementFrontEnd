@@ -146,7 +146,7 @@ class AttendanceService {
           var data = await jsonDecode(response.body);
 
           CustomSnackBar.buildSuccessSnackbar(
-              context, response.body.toString());
+              context,'successFully marked');
           AttendanceModel attendanceModel = AttendanceModel.fromJson(data);
           print(data['data']['attendance'][0]['arrivalTime']);
           return attendanceModel;

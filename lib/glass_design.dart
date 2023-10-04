@@ -13,12 +13,78 @@ class GlassDesign extends StatefulWidget {
 }
 
 class _GlassDesignState extends State<GlassDesign> {
+
+  void showCustomDialog(BuildContext context) {
+  showGeneralDialog(
+    context: context,
+    barrierLabel: "Barrier",
+    barrierDismissible: true,
+    barrierColor: Colors.black.withOpacity(0.5),
+    transitionDuration: Duration(milliseconds: 700),
+    pageBuilder: (_, __, ___) {
+      return Center(
+        child: Container(
+          height: 200.h,
+          width: 100.w,
+          padding: EdgeInsets.all(20.sp),
+          margin:const EdgeInsets.symmetric(horizontal: 20),
+          decoration: BoxDecoration(color: Colors.white.withOpacity(0.5), borderRadius: BorderRadius.circular(40)),
+ child: Column(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+  children: [
+    SizedBox(height: 30.h,),
+    Text('MARK ATTENDANCE',style: TextStyle(fontSize: 15.sp,
+    decoration: TextDecoration.none,
+    color: Colors.white,
+    fontWeight: FontWeight.w600
+    ),),
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        TextButton(onPressed: (){}, child: const Text('Back')),
+            TextButton(onPressed: (){}, child: const Text('Done')),
+      ],
+    )
+  ],
+ ),
+        ),
+      );
+    },
+    transitionBuilder: (_, anim, __, child) {
+      Tween<Offset> tween;
+      if (anim.status == AnimationStatus.reverse) {
+        tween = Tween(begin: Offset(-1, 0), end: Offset.zero);
+      } else {
+        tween = Tween(begin: Offset(0, 1), end: Offset.zero);
+      }
+  
+      return SlideTransition(
+        position: tween.animate(anim),
+        child: FadeTransition(
+          opacity: anim,
+          child: child,
+        ),
+      );
+    },
+  );
+}
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
       appBar: AppBar(title: Text("GLASS"),
       
       backgroundColor: Colors.transparent.withOpacity(0.2),
+      actions: [
+        IconButton(onPressed: (){
+          // showDialog(context: context, builder: (context){
+          //   return Container(
+          //     height: 100.h,
+          //     child: AlertDialog());
+          // });
+          showCustomDialog(context);
+        }, icon: Icon(Icons.add))
+      ],
       ),
       body: Container(
         height: 1.sh,

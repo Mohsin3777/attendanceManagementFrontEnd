@@ -29,7 +29,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     emailController.dispose();
     nameController.dispose();
@@ -57,7 +57,10 @@ SizedBox(height: 20.h,),
           if(constraints.maxWidth > 200.0) {
             return Row(
               children: [
-                Expanded(child: Container()),
+ 
+     Visibility(
+      visible: constraints.maxWidth >650,
+      child:            Expanded(child: Container()),),
                        Expanded(
                         flex: 2,
                          child: Container(
@@ -146,6 +149,8 @@ SizedBox(height: 20.h,),
                                                 alignment: Alignment.center,
                                                 margin: margin,
                                                 child: CustomLoadingButton(
+
+                                                  
                                                   text: "Sign Up",
                                                   height: 60.h,
                                                   width: 1.sw,

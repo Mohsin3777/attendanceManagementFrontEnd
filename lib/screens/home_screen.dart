@@ -1,3 +1,5 @@
+
+
 import 'package:attendance_system/screens/attendance/all_attendance_screen.dart';
 import 'package:attendance_system/screens/attendance/widgets/header_transparent_tile.dart';
 import 'package:attendance_system/screens/auth/create_user.dart';
@@ -17,13 +19,50 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+    Duration _animationDuration = Duration(milliseconds: 1000);
+  Color _backgroundColor = Colors.blueGrey;
+double _height = 150;
+double _width = 150;
+// double _borderWidth = 300;
+// double _borderRadius = 10;
+double _padding = 10;
+
+animate(Widget  widget){
+  return AnimatedContainer(
+  duration: _animationDuration,
+  height: _height,
+  width: _width,
+  padding: EdgeInsets.all(_padding),
+  decoration: BoxDecoration(
+
+
+  ),
+  child: widget,
+);
+}
+  @override
+  void initState() {
+    super.initState();
+// animateDur();
+  }
+animateDur(){
+ Future.delayed(Duration(seconds: 3),(){
+          setState(() {
+        _height = 200;
+        _width = 200;
+        
+        // _backgroundColor = Colors.red;
+        _padding = 10;
+    });
+ });
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    
       backgroundColor: Color(0xff242627),
-      appBar: AppBar(
-        backgroundColor: Color(0xff242627),
-      ),
+
       body: Container(
       
                  height: 1.sh,
@@ -41,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+               
                   CustomHomeIconButtonWithText(
                     icon: Icons.home,
                     text: 'HOME',
@@ -51,6 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               builder: (context) => const AllUsersScreen()));
                     },
                   ),
+               
                   CustomHomeIconButtonWithText(
                     icon: Icons.car_crash_outlined,
                     text: 'Add User',
@@ -61,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               builder: (context) => const CreateUserScreen()));
                     },
                   )
+             
                 ],
               ),
               SizedBox(
@@ -131,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class CustomHomeIconButtonWithText extends StatelessWidget {
+class CustomHomeIconButtonWithText extends StatefulWidget {
   final String text;
   final IconData icon;
   final VoidCallback onpress;
@@ -142,22 +184,47 @@ class CustomHomeIconButtonWithText extends StatelessWidget {
       required this.onpress});
 
   @override
+  State<CustomHomeIconButtonWithText> createState() => _CustomHomeIconButtonWithTextState();
+}
+
+class _CustomHomeIconButtonWithTextState extends State<CustomHomeIconButtonWithText> {
+  double height = 80.h;
+double width = 80.w;
+// double _borderWidth = 300;
+// double _borderRadius = 10;
+double _padding = 10;
+
+animateDur(){
+ Future.delayed(Duration(milliseconds:1),(){
+          setState(() {
+        height = 100.h;
+        width = 100.w;
+        
+        // _backgroundColor = Colors.red;
+        _padding = 10;
+    });
+ });
+}
+
+  @override
   Widget build(BuildContext context) {
+    animateDur();
     return InkWell(
-      onTap: onpress,
-      child: Container(
-              width: 100.w,
-          height: 100.h,
+      onTap: widget.onpress,
+      child: AnimatedContainer(
+              width: width,
+          height: height,
           decoration: BoxDecoration(
               color: Color(0xff575757).withOpacity(0.8),
               borderRadius: BorderRadius.circular(20.r)),
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          duration: Duration(seconds: 1),
           child: FittedBox(
             child: Column(
               children: [
-                Icon(icon, size: 60.sp, color: Color(0xffdadada)),
+                Icon(widget.icon, size: 60.sp, color: Color(0xffdadada)),
                 Text(
-                  text,
+                  widget.text,
                   style: TextStyle(fontSize: 20.sp, color: Color(0xffdadada)),
                 )
               ],

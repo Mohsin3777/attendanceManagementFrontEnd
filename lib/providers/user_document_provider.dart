@@ -45,10 +45,10 @@ class UserDocumentProvider extends ChangeNotifier {
   registerUser(
       {required BuildContext context,
       required String userId,
-      required bool registerStatus}) {
+      required UserModel? userModel}) {
     isLoading = true;
     _registerUser(
-        context: context, userId: userId, registerStatus: registerStatus);
+        context: context, userId: userId,userModel: userModel );
 
     isLoading = false;
 
@@ -58,11 +58,11 @@ class UserDocumentProvider extends ChangeNotifier {
   _registerUser(
       {required BuildContext context,
       required String userId,
-      required bool registerStatus}) async {
+      required UserModel? userModel}) async {
         print(userId);
     UserServiceClass userServiceClass = UserServiceClass();
-    await userServiceClass.registerUser(
-        context: context, userId: userId, registerStatus: registerStatus);
+    await userServiceClass.UpdateUserWithRegister(
+        context: context, userId: userId, userModel: userModel);
   }
 
 
@@ -90,5 +90,9 @@ class UserDocumentProvider extends ChangeNotifier {
         context: context, userId: userId, );
   }
 
+
+updateListAfterChangeStatus({int? index, bool? registeredValue }){
+
+}
 
 }

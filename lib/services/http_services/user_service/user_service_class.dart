@@ -47,18 +47,23 @@ class UserServiceClass {
   }
 
   //register User
-  Future registerUser(
+  Future UpdateUserWithRegister(
       {required BuildContext context,
       required String userId,
-      required bool registerStatus}) async {
+      required UserModel? userModel
+      }) async {
     try {
+
+
       http.Response response = await put(
-          "api/registerUser/registeredUser/$userId",
-          jsonEncode({"registered": registerStatus}));
+          "api/userDoc/updateUserDetails/$userId",
+          jsonEncode({"registered": userModel!.registered,
+          "name":userModel.name
+          }));
       print(response.body);
       switch (response.statusCode) {
         case 200:
-          CustomSnackBar.buildErrorSnackbar(context, 'Success Fully added');
+          CustomSnackBar.buildSuccessSnackbar(context, 'Success Fully updated');
           return response.body;
         default:
           // ignore: use_build_context_synchronously
@@ -96,7 +101,7 @@ class UserServiceClass {
       print(response.body);
       switch (response.statusCode) {
         case 200:
-          CustomSnackBar.buildErrorSnackbar(context, 'Success Fully added');
+          CustomSnackBar.buildSuccessSnackbar(context, 'Success Fully remove');
           return response.body;
         default:
           // ignore: use_build_context_synchronously
